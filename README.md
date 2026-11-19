@@ -1,6 +1,6 @@
-# experttaxservice.in
+# expert-filings.com
 
-Website for Expert Tax Service (Ravi Kumar) — income tax, GST and financial guidance, India.
+Website for Expert Filings (Ravi Kumar) — income tax, GST and financial guidance, India.
 
 - Static site: `index.html` (single page, tabbed)
 - Hosting: Cloudflare Pages, connected to this repo (no build step, output directory `/`)
