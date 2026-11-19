@@ -1,5 +1,5 @@
-// Cloudflare Pages Function: POST /api/enquiry -> sends the enquiry to Ravi via Resend.
-// Required environment variables (Cloudflare Pages > Settings > Variables and Secrets):
+// POST /api/enquiry handler (called from src/worker.js) -> sends the enquiry to Ravi via Resend.
+// Required environment variables (Cloudflare > Workers & Pages > expertfilings > Settings > Variables and Secrets):
 //   RESEND_API_KEY  (secret)  e.g. re_xxx
 //   TO_EMAIL      (optional) defaults to hellocompsilon@gmail.com
 //   FROM_EMAIL    (optional) defaults to onboarding@resend.dev, e.g. Expert Filings <enquiry@expert-filings.com>  (domain must be verified in Resend)
@@ -7,7 +7,7 @@
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 
-export async function onRequestPost({ request, env }) {
+export async function handleEnquiry(request, env) {
   let d;
   try { d = await request.json(); } catch { return json({ ok: false, error: 'Invalid request' }, 400); }
 
@@ -57,4 +57,4 @@ export async function onRequestPost({ request, env }) {
   return json({ ok: true });
 }
 
-export const onRequest = () => json({ ok: false, error: 'Method not allowed' }, 405);
+export { json };
