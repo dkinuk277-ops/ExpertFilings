@@ -1,8 +1,8 @@
 // Cloudflare Pages Function: POST /api/enquiry -> sends the enquiry to Ravi via Resend.
 // Required environment variables (Cloudflare Pages > Settings > Variables and Secrets):
 //   RESEND_API_KEY  (secret)  e.g. re_xxx
-//   TO_EMAIL                  e.g. ravi@gmail.com
-//   FROM_EMAIL                e.g. Expert Filings <enquiry@expert-filings.com>  (domain must be verified in Resend)
+//   TO_EMAIL      (optional) defaults to hellocompsilon@gmail.com
+//   FROM_EMAIL    (optional) defaults to onboarding@resend.dev, e.g. Expert Filings <enquiry@expert-filings.com>  (domain must be verified in Resend)
 
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
@@ -23,7 +23,10 @@ export async function onRequestPost({ request, env }) {
   }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ ok: false, error: 'Invalid email' }, 400);
 
-  if (!env.RESEND_API_KEY || !env.TO_EMAIL || !env.FROM_EMAIL) return json({ ok: false, error: 'Email not configured' }, 500);
+  // Defaults until Ravi's own inbox and the expert-filings.com Resend domain are set up
+  const TO = env.TO_EMAIL || 'hellocompsilon@gmail.com';
+  const FROM = env.FROM_EMAIL || 'Expert Filings <onboarding@resend.dev>';
+  if (!env.RESEND_API_KEY) return json({ ok: false, error: 'Email not configured' }, 500);
 
   const rows = [
     ['Name', name], ['Mobile', phone], ['Email', email || '—'], ['City', d.city],
@@ -38,8 +41,8 @@ export async function onRequestPost({ request, env }) {
     <p style="color:#888;font-size:12px">Sent from expert-filings.com enquiry form. Client consented to be contacted.</p></div>`;
 
   const payload = {
-    from: env.FROM_EMAIL,
-    to: env.TO_EMAIL.split(',').map((s) => s.trim()),
+    from: FROM,
+    to: TO.split(',').map((s) => s.trim()),
     subject: `New enquiry: ${name} — ${d.service || 'General'}`,
     html,
   };
