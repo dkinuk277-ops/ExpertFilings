@@ -668,6 +668,7 @@ details p{margin-top:10px;color:var(--ink-2);font-size:.94rem}
     <div class="enq-layout">
       <div class="card">
         <form id="enqForm" novalidate>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
           <div class="row">
             <div class="field"><label for="f_name">Full name *</label><input id="f_name" name="name" autocomplete="name"><div class="err">Please enter your name</div></div>
             <div class="field"><label for="f_phone">Mobile number *</label><input id="f_phone" name="phone" inputmode="numeric" placeholder="10-digit mobile" autocomplete="tel"><div class="err">Enter a valid 10-digit Indian mobile number</div></div>
@@ -763,7 +764,7 @@ details p{margin-top:10px;color:var(--ink-2);font-size:.94rem}
 const CONFIG = {
   whatsapp: "910000000000",            // country code + number, no +
   email: "ravi@expert-filings.com",
-  formEndpoint: ""                      // e.g. https://formspree.io/f/xxxx or Web3Forms URL. Empty = demo mode
+  formEndpoint: location.protocol.startsWith("http") ? "/api/enquiry" : ""   // Cloudflare Pages Function (Resend). Empty on local preview
 };
 
 /* ============ Tabs / routing ============ */
@@ -994,9 +995,9 @@ form.addEventListener('submit',async e=>{
   try{
     if(CONFIG.formEndpoint){
       const r=await fetch(CONFIG.formEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
-      if(!r.ok) throw new Error('send failed');
+      if(!r.ok){let m='';try{m=(await r.json()).error||''}catch(_){};throw new Error(m||'send failed');}
     }
-  }catch(err){btn.disabled=false;btn.textContent='Submit enquiry';alert('Sorry, something went wrong. Please try WhatsApp or call instead.');return;}
+  }catch(err){btn.disabled=false;btn.textContent='Submit enquiry';btn.insertAdjacentHTML('afterend','<p class="err" style="display:block;margin-top:10px">Sorry, '+(err.message&&err.message!=='send failed'?err.message:'something went wrong')+'. Please try WhatsApp or call instead.</p>');return;}
 
   const txt=`Hello Ravi, I'm ${data.name} from ${data.city} (${data.client_type}). Service: ${data.service}. ${data.message}`;
   $('waFollow').href=`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(txt)}`;
