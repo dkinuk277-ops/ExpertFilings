@@ -42,7 +42,7 @@ header{position:sticky;top:0;z-index:50;background:var(--header);backdrop-filter
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
 .brand-mark{width:38px;height:38px;border-radius:10px;background:var(--green);color:#fff;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem;white-space:nowrap;letter-spacing:-.02em}
 .brand-mark span{color:var(--gold)}
-.brand b{color:var(--ink);display:block;font-size:1rem;line-height:1.1}
+.brand b{color:var(--ink);font-size:1.15rem;display:block;font-size:1rem;line-height:1.1}
 .brand small{font-size:.72rem;color:var(--muted)}
 .tabs{display:flex;gap:2px;list-style:none}
 .tabs a{display:block;padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--ink-2);font-weight:600;font-size:.9rem;white-space:nowrap}
@@ -250,6 +250,7 @@ details p{margin-top:10px;color:var(--ink-2);font-size:.94rem}
 [data-theme] .brand{gap:12px}
 [data-theme] .brand small{color:var(--muted)}
 [data-theme] .brand b span{color:var(--accent)!important}
+.brand b{font-size:1.2rem!important;letter-spacing:-.01em}
 .emblem{flex:none;filter:drop-shadow(0 4px 10px var(--btn-glow))}
 
 /* glossy buttons */
@@ -358,7 +359,7 @@ details p{margin-top:10px;color:var(--ink-2);font-size:.94rem}
   <div class="wrap nav">
     <a class="brand" href="#home" data-tab="home">
       <svg class="emblem" width="40" height="40" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="egH" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--em-a)"/><stop offset="1" style="stop-color:var(--em-b)"/></linearGradient><linearGradient id="egHh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="M24 2.5 42.5 8.6V23c0 11.2-7.9 18.6-18.5 22.5C13.4 41.6 5.5 34.2 5.5 23V8.6Z" fill="url(#egH)"/><path d="M24 2.5 42.5 8.6V23c0 1-.1 2-.2 3H5.7C5.6 25 5.5 24 5.5 23V8.6Z" fill="url(#egHh)"/><text x="24" y="25.5" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="19" style="fill:var(--em-ink)">₹</text><polyline points="14,36 20,31.5 25,34 34,27" fill="none" style="stroke:var(--em-ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="30,27 34,27 34,31" fill="none" style="stroke:var(--em-ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <div><b>Expert <span style="color:var(--gold)">Filings</span></b><small>by Ravi Kumar · Tax &amp; Finance</small></div>
+      <div><b>Expert <span style="color:var(--gold)">Filings</span></b></div>
     </a>
     <button class="menu-btn" aria-label="Menu" onclick="document.querySelector('.tabs').classList.toggle('open')">☰</button>
     <ul class="tabs">
